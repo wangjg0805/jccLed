@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<Workspace>
+  <ConfigDictionary>
+    
+  <CurrentConfigs><Project>project/STM8S105</Project></CurrentConfigs></ConfigDictionary>
+  <Desktop>
+    <Static>
+      <Workspace>
+        <ColumnWidths>
+          
+          
+          
+          
+        <Column0>291</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
+      </Workspace>
+      <Build>
+        <PreferedWindows>
+          
+          
+          
+          
+        <Position>3</Position><ScreenPosX>0</ScreenPosX><ScreenPosY>0</ScreenPosY><Windows><Window><Factory>Debug-Log</Factory></Window><Window><Factory>Find-in-Files</Factory></Window></Windows></PreferedWindows>
+        
+        
+        
+        
+      <ColumnWidth0>20</ColumnWidth0><ColumnWidth1>734</ColumnWidth1><ColumnWidth2>244</ColumnWidth2><ColumnWidth3>61</ColumnWidth3></Build>
+      <Debug-Log>
+        
+        
+        <PreferedWindows>
+          <Position>3</Position>
+          <ScreenPosX>0</ScreenPosX>
+          <ScreenPosY>0</ScreenPosY>
+          <Windows>
+            <Window>
+              <Factory>Build</Factory>
+            </Window>
+          </Windows>
+        </PreferedWindows>
+      <ColumnWidth0>20</ColumnWidth0><ColumnWidth1>1221</ColumnWidth1></Debug-Log>
+      <TerminalIO/>
+    <Find-in-Files><ColumnWidth0>491</ColumnWidth0><ColumnWidth1>70</ColumnWidth1><ColumnWidth2>842</ColumnWidth2></Find-in-Files></Static>
+    <Windows>
+      
+      
+    <Wnd0>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-16789-24374</Identity>
+            <TabName>Workspace</TabName>
+            <Factory>Workspace</Factory>
+            <Session>
+              
+            <NodeDict><ExpandedNode>project</ExpandedNode><ExpandedNode>project/Include Files</ExpandedNode><ExpandedNode>project/Output</ExpandedNode><ExpandedNode>project/STM8S_StdPeriph_Lib</ExpandedNode><ExpandedNode>project/STM8S_StdPeriph_Lib/src</ExpandedNode><ExpandedNode>project/Source Files</ExpandedNode></NodeDict></Session>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd0><Wnd1><Tabs><Tab><Identity>TabID-31736-16874</Identity><TabName>Build</TabName><Factory>Build</Factory><Session/></Tab><Tab><Identity>TabID-17660-619</Identity><TabName>Debug Log</TabName><Factory>Debug-Log</Factory><Session/></Tab></Tabs><SelectedTab>0</SelectedTab></Wnd1></Windows>
+    <Editor>
+      
+      
+      
+      
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\src\ht1621.c</Filename><XPos>0</XPos><YPos>596</YPos><SelStart>18615</SelStart><SelEnd>18615</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\src\main.c</Filename><XPos>0</XPos><YPos>122</YPos><SelStart>3072</SelStart><SelEnd>3072</SelEnd></Tab><ActiveTab>1</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\src\key.c</Filename><XPos>0</XPos><YPos>45</YPos><SelStart>341</SelStart><SelEnd>341</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\src\motor.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>580</SelStart><SelEnd>580</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\inc\motor.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>458</SelStart><SelEnd>492</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Positions>
+      
+      
+      
+      
+      
+    <Top><Row0><Sizes><Toolbar-01bed148><key>iaridepm.enu1</key></Toolbar-01bed148></Sizes></Row0><Row1><Sizes/></Row1><Row2><Sizes><Toolbar-03d66880><key>debuggergui.enu1</key></Toolbar-03d66880></Sizes></Row2></Top><Left><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>566</Bottom><Right>382</Right><x>-2</x><y>-2</y><xscreen>57</xscreen><yscreen>76</yscreen><sizeHorzCX>35625</sizeHorzCX><sizeHorzCY>91787</sizeHorzCY><sizeVertCX>240000</sizeVertCX><sizeVertCY>685990</sizeVertCY></Rect></Wnd0></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>217</Bottom><Right>1602</Right><x>-2</x><y>-2</y><xscreen>1604</xscreen><yscreen>219</yscreen><sizeHorzCX>1002500</sizeHorzCX><sizeHorzCY>264493</sizeHorzCY><sizeVertCX>125000</sizeVertCX><sizeVertCY>241546</sizeVertCY></Rect></Wnd1></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+  </Desktop>
+</Workspace>
+
+
