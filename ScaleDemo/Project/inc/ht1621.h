@@ -1,6 +1,7 @@
 #ifndef __LED_H__
 #define __LED_H__
 #include "stm8s.h"
+#include "global.h"
 //----------------------------------------------------------------------------   
 //取前三位   
 #define COMMAND 0x80   
@@ -28,19 +29,23 @@
 #define DATAL   GPIO_WriteLow(GPIOC,  GPIO_PIN_7)
 #define DATAH   GPIO_WriteHigh(GPIOC, GPIO_PIN_7)
 
- void HT1621_Pin_Init(void);
- void Init_1621(void);
- 
- void flag_disp_proc(u8 TestMode);
- void display_ad_data(u16 ad_tmp);
- 
- void Update_Display_Buf(float InValue);
- void Refresh_DisplayBuf(void);
- void Refresh_Ht1621(void);
+#define SEG_A 0x80
+#define SEG_B 0x40
+#define SEG_C 0x20
+#define SEG_D 0x01
+#define SEG_E 0x02
+#define SEG_F 0x08
+#define SEG_G 0x04
+#define SEG_P 0x10
 
- void All_on(void);
- void All_on_Must(void);
- void All_off_Must(void);
- void All_off(void);
- void Display_Err(void);
+//extern area
+void HT1621_Init(void);
+void Update_Display(void);
+
+void All_ON_Must(void);
+void All_OFF_Must(void);
+void Display_Area1(u32 data,u8 dot);
+void Display_Area2(u32 data,u8 dot);
+void Display_Area3(u32 data,u8 dot);
+
 #endif

@@ -272,7 +272,7 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
      it is recommended to set a breakpoint on the following instruction.
   */
     TIM2_ClearITPendingBit(TIM2_IT_UPDATE); //清中断标志位
-    Timer_Int_Pro();
+    Timer2_ISR();
 }
 
 /**

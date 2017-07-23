@@ -5,5 +5,5 @@ extern  u8 flag_10ms,flag_100ms,flag_500ms;
 
 void  TIM1_Init(void);
 void  TIM2_Init(void);
-void  Timer_Int_Pro();
+void  Timer2_ISR();
 #endif

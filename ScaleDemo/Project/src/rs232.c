@@ -54,7 +54,7 @@ void  Send_RS232(u16 ad)
      OutString[4] = 0x0d;
      OutString[5] = 0x0a;*/
     //使用PRINTER
-     UART2_SendString(Send_buf,13);
+     UART2_SendString(RS232_buf,13);
  }
 //USE PC
 void  Send_RS232_PC(u16 ad) 
@@ -63,29 +63,29 @@ void  Send_RS232_PC(u16 ad)
    //PC
    //把send_buf 重新组装
    //UART2_SendString(Send_buf,13);
-   if('s' == Send_buf[10])
+   if('s' == RS232_buf[10])
      {
       OutString[0] = 'A';
       OutString[1] = '=';
-      OutString[2] = Send_buf[0];
-      OutString[3] = Send_buf[1];
-      OutString[4] = Send_buf[2];
-      OutString[5] = Send_buf[3];
-      OutString[6] = Send_buf[4];
-      OutString[7] = Send_buf[5];
+      OutString[2] = RS232_buf[0];
+      OutString[3] = RS232_buf[1];
+      OutString[4] = RS232_buf[2];
+      OutString[5] = RS232_buf[3];
+      OutString[6] = RS232_buf[4];
+      OutString[7] = RS232_buf[5];
       OutString[8] = 0x0d;
       UART2_SendString(OutString,9);
      }
-   else if('T' == Send_buf[10])
+   else if('T' == RS232_buf[10])
      {
       OutString[0] = 'T'; 
       OutString[1] = '=';
-      OutString[2] = Send_buf[0];
-      OutString[3] = Send_buf[1];
-      OutString[4] = Send_buf[2];
-      OutString[5] = Send_buf[3];
-      OutString[6] = Send_buf[4];
-      OutString[7] = Send_buf[5];
+      OutString[2] = RS232_buf[0];
+      OutString[3] = RS232_buf[1];
+      OutString[4] = RS232_buf[2];
+      OutString[5] = RS232_buf[3];
+      OutString[6] = RS232_buf[4];
+      OutString[7] = RS232_buf[5];
       OutString[8] = 0x0d;
       UART2_SendString(OutString,9);
      }
@@ -93,12 +93,12 @@ void  Send_RS232_PC(u16 ad)
      {
       OutString[0] = 'C';
       OutString[1] = '=';
-      OutString[2] = Send_buf[1];
-      OutString[3] = Send_buf[2];
-      OutString[4] = Send_buf[3];
-      OutString[5] = Send_buf[4];
-      OutString[6] = Send_buf[5];
+      OutString[2] = RS232_buf[1];
+      OutString[3] = RS232_buf[2];
+      OutString[4] = RS232_buf[3];
+      OutString[5] = RS232_buf[4];
+      OutString[6] = RS232_buf[5];
       OutString[7] = 0x0d;
-      UART2_SendString(OutString,8);
+      UART2_SendString(RS232_buf,8);
      } 
  }
