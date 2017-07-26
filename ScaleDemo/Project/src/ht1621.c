@@ -1,4 +1,4 @@
-#include "stm8s.h"
+#include "stm8s_conf.h"
 #include "stdio.h"
 #include "math.h"
 
@@ -189,12 +189,18 @@ void Display_Boot_Info(void)
 //////////////////////////////////////////////////////////////////////
 void Display_Area1(u32 data,u8 dot)
 {
-    u8 i;
-    u8 buf[16];
-    snprintf(buf,6,"%d",data);
-    
+    u8 i,buf[5];
+    if(data > 99999)
+        data = 99999;
+    buf[0] =  data / 10000;
+    buf[1] = (data % 10000) / 1000;
+    buf[2] = (data % 1000) / 100;
+    buf[3] = (data % 100) / 10;
+    buf[4] =  data % 10;
     for(i=0;i<5;i++)
-        display_buffer[i] = display_code[buf[i]-0x30];
+        display_buffer[i] = display_code[buf[i]]; 
+    display_buffer[dot-1] |= SEG_P;
+
 
 }	
 void Display_Area2(u32 data,u8 dot)

@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm8s_flash.c
   * @author  MCD Application Team
-  * @version V2.0.0
-  * @date    25-February-2011
+	* @version V2.1.0
+  * @date    18-November-2011
   * @brief   This file contains all the functions for the FLASH peripheral.
   ******************************************************************************
   * @attention
@@ -62,7 +62,7 @@
 /* Private define ------------------------------------------------------------*/
 #define FLASH_CLEAR_BYTE ((uint8_t)0x00)
 #define FLASH_SET_BYTE  ((uint8_t)0xFF)
-#define  OPERATION_TIMEOUT  ((uint32_t)0xFFFFF)
+#define OPERATION_TIMEOUT  ((uint32_t)0xFFFFF)
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
@@ -534,8 +534,8 @@ IN_RAM(FLASH_Status_TypeDef FLASH_WaitForLastOperation(FLASH_MemType_TypeDef FLA
     uint32_t timeout = OPERATION_TIMEOUT;
     
     /* Wait until operation completion or write protection page occurred */
-#if defined (STM8S208) || defined(STM8S207) || defined(STM8S105) || defined(STM8AF52Ax) ||\
-    defined(STM8AF62Ax) || defined(STM8AF626x)  
+#if defined (STM8S208) || defined(STM8S207) || defined(STM8S007) || defined(STM8S105) || \
+    defined(STM8S005) || defined(STM8AF52Ax) || defined(STM8AF62Ax) || defined(STM8AF626x)  
     if (FLASH_MemType == FLASH_MEMTYPE_PROG)
     {
         while ((flagstatus == 0x00) && (timeout != 0x00))
@@ -582,9 +582,10 @@ IN_RAM(void FLASH_EraseBlock(uint16_t BlockNum, FLASH_MemType_TypeDef FLASH_MemT
 {
   uint32_t startaddress = 0;
     
-#if defined (STM8S105) || defined (STM8S103) || defined (STM8S903) || defined (STM8AF626x)
+#if defined(STM8S105) || defined(STM8S005) || defined(STM8S103) || defined(STM8S003) || \
+    defined (STM8S903) || defined (STM8AF626x)
   uint32_t PointerAttr  *pwFlash;
-#elif defined (STM8S208) || defined (STM8S207) || defined (STM8AF62Ax) || defined (STM8AF52Ax) 
+#elif defined (STM8S208) || defined(STM8S207) || defined(STM8S007) || defined (STM8AF62Ax) || defined (STM8AF52Ax) 
   uint8_t PointerAttr  *pwFlash;
 #endif
 
@@ -602,9 +603,10 @@ IN_RAM(void FLASH_EraseBlock(uint16_t BlockNum, FLASH_MemType_TypeDef FLASH_MemT
   }
 
     /* Point to the first block address */
-#if defined (STM8S208) || defined (STM8S207) || defined (STM8AF62Ax) || defined (STM8AF52Ax)
+#if defined (STM8S208) || defined(STM8S207) || defined(STM8S007) || defined (STM8AF62Ax) || defined (STM8AF52Ax)
     pwFlash = (PointerAttr uint8_t *)(uint32_t)(startaddress + ((uint32_t)BlockNum * FLASH_BLOCK_SIZE));
-#elif defined (STM8S105) || defined (STM8S103) || defined (STM8S903) || defined (STM8AF626x)
+#elif defined(STM8S105) || defined(STM8S005) || defined(STM8S103) || defined(STM8S003) || \
+      defined (STM8S903) || defined (STM8AF626x)
     pwFlash = (PointerAttr uint32_t *)(uint16_t)(startaddress + ((uint32_t)BlockNum * FLASH_BLOCK_SIZE));
 #endif	/* STM8S208, STM8S207 */
 
@@ -612,9 +614,11 @@ IN_RAM(void FLASH_EraseBlock(uint16_t BlockNum, FLASH_MemType_TypeDef FLASH_MemT
     FLASH->CR2 |= FLASH_CR2_ERASE;
     FLASH->NCR2 &= (uint8_t)(~FLASH_NCR2_NERASE);
 
-#if defined (STM8S105) || defined (STM8S103) || defined (STM8S903) || defined (STM8AF626x)
+#if defined(STM8S105) || defined(STM8S005) || defined(STM8S103) || defined(STM8S003) ||  \
+    defined (STM8S903) || defined (STM8AF626x)
     *pwFlash = (uint32_t)0;
-#elif defined (STM8S208) || defined (STM8S207) || defined (STM8AF62Ax) || defined (STM8AF52Ax)
+#elif defined (STM8S208) || defined(STM8S207) || defined(STM8S007) || defined (STM8AF62Ax) || \
+      defined (STM8AF52Ax)
   *pwFlash = (uint8_t)0;
   *(pwFlash + 1) = (uint8_t)0;
   *(pwFlash + 2) = (uint8_t)0;
@@ -671,10 +675,10 @@ IN_RAM(void FLASH_ProgramBlock(uint16_t BlockNum, FLASH_MemType_TypeDef FLASH_Me
     /* Copy data bytes from RAM to FLASH memory */
     for (Count = 0; Count < FLASH_BLOCK_SIZE; Count++)
     {
-#if defined (STM8S208) || defined(STM8S207) || defined(STM8S105) || defined (STM8AF62Ax) ||\
-    defined (STM8AF52Ax) || defined (STM8AF626x)
+#if defined (STM8S208) || defined(STM8S207) || defined(STM8S007) || defined(STM8S105) || \
+    defined(STM8S005) || defined (STM8AF62Ax) || defined (STM8AF52Ax) || defined (STM8AF626x)
   *((PointerAttr uint8_t*) (uint16_t)startaddress + Count) = ((uint8_t)(Buffer[Count]));
-#elif defined (STM8S103) || defined (STM8S903)
+#elif defined(STM8S103) || defined(STM8S003) ||  defined (STM8S903)
   *((PointerAttr uint8_t*) (uint16_t)startaddress + Count) = ((uint8_t)(Buffer[Count]));
 #endif       
     }

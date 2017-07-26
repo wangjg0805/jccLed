@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm8s_flash.h
   * @author  MCD Application Team
-  * @version V2.0.0
-  * @date    25-February-2011
+  * @version V2.1.0
+  * @date    18-November-2011
   * @brief   This file contains all functions prototype and macros for the FLASH peripheral.
   ******************************************************************************
   * @attention
@@ -34,16 +34,16 @@
 
 #define FLASH_PROG_START_PHYSICAL_ADDRESS ((uint32_t)0x008000) /*!< Program memory: start address */
 
-#if defined (STM8S208) || defined (STM8S207) || defined (STM8AF52Ax) || defined (STM8AF62Ax)
+#if defined (STM8S208) || defined(STM8S207) || defined(STM8S007) || defined (STM8AF52Ax) || defined (STM8AF62Ax)
  #define FLASH_PROG_END_PHYSICAL_ADDRESS   ((uint32_t)0x027FFF) /*!< Program memory: end address */
  #define FLASH_PROG_BLOCKS_NUMBER          ((uint16_t)1024)     /*!< Program memory: total number of blocks */
  #define FLASH_DATA_START_PHYSICAL_ADDRESS ((uint32_t)0x004000) /*!< Data EEPROM memory: start address */
  #define FLASH_DATA_END_PHYSICAL_ADDRESS   ((uint32_t)0x0047FF) /*!< Data EEPROM memory: end address */
  #define FLASH_DATA_BLOCKS_NUMBER          ((uint16_t)16)       /*!< Data EEPROM memory: total number of blocks */
  #define FLASH_BLOCK_SIZE                  ((uint8_t)128)       /*!< Number of bytes in a block (common for Program and Data memories) */
-#endif /* STM8S208, STM8S207, STM8AF52Ax, STM8AF62Ax */
+#endif /* STM8S208, STM8S207, STM8S007, STM8AF52Ax, STM8AF62Ax */
 
-#if defined (STM8S105) || defined(STM8AF626x)
+#if defined(STM8S105) || defined(STM8S005) || defined(STM8AF626x)
  #define FLASH_PROG_END_PHYSICAL_ADDRESS   ((uint32_t)0xFFFF)   /*!< Program memory: end address */
  #define FLASH_PROG_BLOCKS_NUMBER          ((uint16_t)256)      /*!< Program memory: total number of blocks */
  #define FLASH_DATA_START_PHYSICAL_ADDRESS ((uint32_t)0x004000) /*!< Data EEPROM memory: start address */
@@ -52,7 +52,7 @@
  #define FLASH_BLOCK_SIZE                  ((uint8_t)128)       /*!< Number of bytes in a block (common for Program and Data memories) */
 #endif /* STM8S105 or STM8AF626x */
 
-#if defined (STM8S103) || defined(STM8S903)
+#if defined(STM8S103) || defined(STM8S003) ||  defined(STM8S903)
  #define FLASH_PROG_END_PHYSICAL_ADDRESS   ((uint32_t)0x9FFF)   /*!< Program memory: end address */
  #define FLASH_PROG_BLOCKS_NUMBER          ((uint16_t)128)      /*!< Program memory: total number of blocks */
  #define FLASH_DATA_START_PHYSICAL_ADDRESS ((uint32_t)0x004000) /*!< Data EEPROM memory: start address */
@@ -117,8 +117,8 @@ FLASH_LPMode_TypeDef;
   * @brief  FLASH status of the last operation
   */
 typedef enum {
-#if defined (STM8S208) || defined(STM8S207) || defined(STM8S105) || defined (STM8AF52Ax) ||\
-    defined (STM8AF62Ax) || defined(STM8AF626x)		
+#if defined (STM8S208) || defined(STM8S207) || defined(STM8S007) || defined(STM8S105) || \
+    defined(STM8S005) || defined (STM8AF52Ax) || defined (STM8AF62Ax) || defined(STM8AF626x)		
 		FLASH_STATUS_END_HIGH_VOLTAGE           = (uint8_t)0x40, /*!< End of high voltage */
 #endif /* STM8S208, STM8S207, STM8S105, STM8AF62Ax, STM8AF52Ax, STM8AF626x */
 		FLASH_STATUS_SUCCESSFUL_OPERATION       = (uint8_t)0x04, /*!< End of operation flag */
@@ -131,8 +131,8 @@ typedef enum {
  * - Warning : FLAG value = mapping position register
   */
 typedef enum {
-#if defined (STM8S208) || defined(STM8S207) || defined(STM8S105) || defined (STM8AF52Ax) ||\
-    defined (STM8AF62Ax) || defined(STM8AF626x)
+#if defined (STM8S208) || defined(STM8S207) || defined(STM8S007) || defined(STM8S105) || \
+    defined(STM8S005) || defined (STM8AF52Ax) || defined (STM8AF62Ax) || defined(STM8AF626x)
     FLASH_FLAG_HVOFF     = (uint8_t)0x40,     /*!< End of high voltage flag */
 #endif /* STM8S208, STM8S207, STM8S105, STM8AF62Ax, STM8AF52Ax, STM8AF626x */
     FLASH_FLAG_DUL       = (uint8_t)0x08,     /*!< Data EEPROM unlocked flag */
@@ -225,8 +225,8 @@ typedef enum {
 /**
   * @brief  Macro used by the assert function in order to check the different flags values
   */
-#if defined (STM8S208) || defined(STM8S207) || defined(STM8S105) || defined (STM8AF52Ax) ||\
-    defined (STM8AF62Ax) || defined(STM8AF626x)
+#if defined (STM8S208) || defined(STM8S207) || defined(STM8S007) || defined(STM8S105) || \
+    defined(STM8S005) || defined (STM8AF52Ax) || defined (STM8AF62Ax) || defined(STM8AF626x)
  #define IS_FLASH_FLAGS_OK(FLAG) (((FLAG) == FLASH_FLAG_HVOFF) || \
                                  ((FLAG) == FLASH_FLAG_DUL) || \
                                  ((FLAG) == FLASH_FLAG_EOP) || \

@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm8s_tim1.h
   * @author  MCD Application Team
-  * @version V2.0.0
-  * @date    25-February-2011
+  * @version V2.1.0
+  * @date    18-November-2011
   * @brief   This file contains all functions prototype and macros for the TIM1 peripheral.
   ******************************************************************************
   * @attention

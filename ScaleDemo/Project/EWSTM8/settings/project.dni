@@ -1,5 +1,5 @@
 [DebugChecksum]
-Checksum=1820572964
+Checksum=1294726665
 [DisAssemblyWindow]
 NumStates=_ 1
 State 1=_ 1
@@ -43,6 +43,8 @@ ActionState=1
 [TraceHelper]
 Enabled=0
 ShowSource=1
+[BreakpointUsageDialog]
+Placement=_ 578 294 1023 576
 [Breakpoints]
 Count=0
 [Log file]

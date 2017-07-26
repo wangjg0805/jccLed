@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm8s_clk.h
   * @author  MCD Application Team
-  * @version V2.0.0
-  * @date    25-February-2011
+  * @version V2.1.0
+  * @date    18-November-2011
   * @brief   This file contains all functions prototype and macros for the CLK peripheral.
   ******************************************************************************
   * @attention
@@ -112,7 +112,7 @@ typedef enum {
 typedef enum {
   CLK_PERIPHERAL_I2C     = (uint8_t)0x00, /*!< Peripheral Clock Enable 1, I2C */
   CLK_PERIPHERAL_SPI     = (uint8_t)0x01, /*!< Peripheral Clock Enable 1, SPI */
-#if defined(STM8S208) || defined(STM8S207) || defined(STM8AF52Ax) || defined(STM8AF62Ax)
+#if defined(STM8S208) || defined(STM8S207) || defined(STM8S007) || defined(STM8AF52Ax) || defined(STM8AF62Ax)
   CLK_PERIPHERAL_UART1   = (uint8_t)0x02, /*!< Peripheral Clock Enable 1, UART1 */
 #else
   CLK_PERIPHERAL_UART1   = (uint8_t)0x03, /*!< Peripheral Clock Enable 1, UART1 */

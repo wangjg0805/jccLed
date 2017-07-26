@@ -1,11 +1,11 @@
-//ad_proc.h
+#ifndef __AD_PROC_H__
+#define __AD_PROC_H__
 
-extern  void  ad_zero_track(void);
-extern  void  ad_load_track(void);
+void  auto_zero_proc(void);
+void load_track_proc(void);
 
-extern  void  ad_proc(void);
-extern  void  ad_proc_f(void);
 
-extern  void  ad_zero(void);
-extern  void  start_zero(void);
+void  do_tare_proc(void);
+void  do_zero_proc(void);
 
+#endif

@@ -6,7 +6,8 @@
 #include  "i2c.h"
 #include  "math.h"
 
-void ad_zero_track(void)
+
+void auto_zero_proc(void)
 { 
     if(labs(MData.ad_dat_avg-MData.ad_zero_data) < FilterData.ad_filter_para*5) {
 	    FilterData.zero_track_cnt++;
@@ -19,7 +20,7 @@ void ad_zero_track(void)
 }
 
 /////////////////////////////////////////////////////////////////////////////////
-void ad_load_track()
+void load_track_proc(void)
 { 
     u32   ad_tmp;
     static u32 lock_ad_tmp = 0; //本次锁定的重量
@@ -67,31 +68,20 @@ void ad_load_track()
 }
 
 /////////////////////////////////////////////////////////////////////////
-void  ad_proc(void)
-    {	
-	  
-	}
-
+void  do_tare_proc(void)
+{	
+	;  
+}
 
 //******************************************************************
-void ad_zero()//手动置零+-2%
+void do_zero_proc()//手动置零+-2%
 {
     //手动置零 条件
    static u32 has_zero_code=0;
   
 }
 
-//******************************************************************
-//开机置零
-void  start_zero(void)
-{
-	//开机置零范围
-	//if(labs(ad_dat_avg-ad_zero_code) < ad_filter_para*200) 
-    //   {
-	    MData.ad_zero_data = MData.ad_dat_avg;
-	//   }
 
-}
 //********************************************************************
 
 

@@ -5,22 +5,31 @@
 #include  "ad_filter.h"
 #include  "math.h"														  
  
-#define  RAW_DATA_MAG              8		 //原始数据缩小几倍后用于内码
-//--------------------------------------------------------------
-
 static u32 ad_dat[AD_FILTER_LENGTH];
+static u8  ad_dat_idx;
+static u8  ad_stable_cnt;
+
 static u8  flag_ad_buf_full = 0;
-static u8  ad_dat_idx,ad_stable_cnt;
 static u8  fast_filter_flag = 0;
 
 //--------------------------------------------------------------
-void ad_filter_init(void)
+void Filter_Init(void)
 {
-	u8   i;
+	u8 i;
 	for(i=0;i<AD_FILTER_LENGTH;i++)
 		ad_dat[i]=0;
 	ad_dat_idx = 0;
  	ad_stable_cnt = 0;
+    flag_ad_buf_full = 0;
+    fast_filter_flag = 0;
+    
+    RunData.stable_flag = 0;
+    
+    FilterData.ad_filter_para = 10;
+    FilterData.zero_track_enable = 0;
+    FilterData.zero_track_cnt = 0;
+    FilterData.load_track_enable = 0;
+    FilterData.load_track_cnt = 0; 
 }
 
 //--------------------------------------------------------------
@@ -30,9 +39,14 @@ u32 ad_filter0(u32 ad_new_dat)
     static u8 direct_add_cnt     = 0;
     static u8 direct_sub_cnt     = 0;
     static u8 filter0_stable_cnt = 0;    
-    static u32 last_ad_dat  = 0;  
-	if(labs(ad_new_dat-last_ad_dat) > FilterData.ad_filter_para*3) {  //相邻两次数据差距很大 	         
-        if(ad_new_dat >= last_ad_dat) {
+    static u32 ad_last_dat  = 0;  
+    u32 tmp;
+    if(ad_new_dat > ad_last_dat)
+        tmp = ad_new_dat - ad_last_dat;
+    else
+        tmp = ad_last_dat - ad_new_dat;
+   if(tmp > FilterData.ad_filter_para*3) {  //相邻两次数据差距很大 	         
+        if(ad_new_dat >= ad_last_dat) {
             direct_add_cnt++;
 	        if(direct_add_cnt>200)
 	            direct_add_cnt = 50;
@@ -43,7 +57,7 @@ u32 ad_filter0(u32 ad_new_dat)
 	            direct_sub_cnt = 50;
 	        direct_add_cnt = 0;
         }
-	    last_ad_dat = ad_new_dat; 
+	    ad_last_dat = ad_new_dat; 
 	    if((direct_add_cnt>3)||(direct_sub_cnt>3)) { //相邻数据大于2D 连续变化3次就进入快速滤波模式
 	     fast_filter_flag = 1;
 	     filter0_stable_cnt = 0;
@@ -61,13 +75,13 @@ u32 ad_filter0(u32 ad_new_dat)
              filter0_stable_cnt =  30;
          //在稳定后使用相邻两次值的权作为最终数据  
          if(filter0_stable_cnt < 6) {   //从大到小更新  
-             last_ad_dat = ad_new_dat;
+             ad_last_dat = ad_new_dat;
          } else if(filter0_stable_cnt < 10) {
-			 last_ad_dat = (ad_new_dat*9+last_ad_dat)/10; 
+			 ad_last_dat = (ad_new_dat*9+ad_last_dat)/10; 
          } else if(filter0_stable_cnt < 15) {
-             last_ad_dat = (ad_new_dat*8+last_ad_dat*2)/10;    //更新
+             ad_last_dat = (ad_new_dat*8+ad_last_dat*2)/10;    //更新
          } else {
-             last_ad_dat = (ad_new_dat*7+last_ad_dat*3)/10;    //更新
+             ad_last_dat = (ad_new_dat*7+ad_last_dat*3)/10;    //更新
          }     
          ////////////////////////   
          if(filter0_stable_cnt > 2) { //当相邻数据连续2次 小于2D 时候，快速滤波模式禁止
@@ -81,7 +95,7 @@ u32 ad_filter0(u32 ad_new_dat)
 			FilterData.zero_track_cnt    = 0;
 	    }
     }   	  
-	return last_ad_dat;
+	return ad_last_dat;
 }    
 //********************************************************
 u32 get_buf_data(void)
@@ -119,14 +133,14 @@ void ad_filter(u32 ad_data)
     u32 tmp;
     tmp = ad_filter0(ad_data); 
     //////////////////////////////////////////
-    if(1==fast_filter_flag) {
+    if(1 == fast_filter_flag) {
         ad_stable_cnt  = 0;
         RunData.stable_flag    = 0;
 		//auto_off_cnt   = 0;
  	    MData.ad_dat_avg = tmp/RAW_DATA_MAG;   //快速变化阶段
     } else {
         /////////////////////////////////////////////////
- 	    if(0==flag_ad_buf_full)
+ 	    if(0 == flag_ad_buf_full)
  	        ad_dat[ad_dat_idx++] = tmp;    //save 
         else {// 先填充满后再进入稳定计时 并根据时间来取舍数据的权
             ad_stable_cnt++;

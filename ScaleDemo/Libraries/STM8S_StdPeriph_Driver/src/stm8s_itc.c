@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm8s_itc.c
   * @author  MCD Application Team
-  * @version V2.0.0
-  * @date    25-February-2011
+  * @version V2.1.0
+  * @date    18-November-2011
   * @brief   This file contains all the functions for the ITC peripheral.
   ******************************************************************************
   * @attention
@@ -51,8 +51,7 @@ uint8_t ITC_GetCPUCC(void)
   return _getCC_();
 #else /* _IAR_ */
   asm("push cc");
-  asm("pop a");
-  return 0;
+  asm("pop a"); /* Ignore compiler warning, the returned value is in A register */
 #endif /* _COSMIC_*/
 }
 
@@ -156,18 +155,20 @@ ITC_PriorityLevel_TypeDef ITC_GetSoftwarePriority(ITC_Irq_TypeDef IrqNum)
     case ITC_IRQ_I2C:
         Value = (uint8_t)(ITC->ISPR5 & Mask); /* Read software priority */
         break;
-#if defined(STM8S105) || defined(STM8AF626x)
+#if defined(STM8S105) || defined(STM8S005) || defined(STM8AF626x)
     case ITC_IRQ_UART2_TX:
     case ITC_IRQ_UART2_RX:
 #endif /*STM8S105 or STM8AF626x*/
 
-#if defined(STM8S208) || defined(STM8S207) || defined(STM8AF52Ax) || defined(STM8AF62Ax)
+#if defined(STM8S208) || defined(STM8S207) || defined(STM8S007) || defined(STM8AF52Ax) || \
+    defined(STM8AF62Ax)
     case ITC_IRQ_UART3_TX:
     case ITC_IRQ_UART3_RX:
     case ITC_IRQ_ADC2:
 #endif /*STM8S208 or STM8S207 or STM8AF52Ax or STM8AF62Ax */
 
-#if defined(STM8S105) ||defined(STM8S103) ||defined(STM8S905) || defined(STM8AF626x)
+#if defined(STM8S105) || defined(STM8S005) || defined(STM8S103) || defined(STM8S003) || \
+    defined(STM8S903) || defined(STM8AF626x)
     case ITC_IRQ_ADC1:
 #endif /*STM8S105, STM8S103 or STM8S905 or STM8AF626x */
 
@@ -279,18 +280,20 @@ void ITC_SetSoftwarePriority(ITC_Irq_TypeDef IrqNum, ITC_PriorityLevel_TypeDef P
         ITC->ISPR5 |= NewPriority;
         break;
 
-#if defined(STM8S105) || defined(STM8AF626x)
+#if defined(STM8S105) || defined(STM8S005) || defined(STM8AF626x)
     case ITC_IRQ_UART2_TX:
     case ITC_IRQ_UART2_RX:
 #endif /*STM8S105 or STM8AF626x */
 
-#if defined(STM8S208) || defined(STM8S207) || defined(STM8AF52Ax) || defined(STM8AF62Ax)
+#if defined(STM8S208) || defined(STM8S207) || defined(STM8S007) || defined(STM8AF52Ax) || \
+    defined(STM8AF62Ax)
     case ITC_IRQ_UART3_TX:
     case ITC_IRQ_UART3_RX:
     case ITC_IRQ_ADC2:
 #endif /*STM8S208 or STM8S207 or STM8AF52Ax or STM8AF62Ax */
 
-#if defined(STM8S105) ||defined(STM8S103) ||defined(STM8S905) || defined(STM8AF626x)
+#if defined(STM8S105) || defined(STM8S005) || defined(STM8S103) || defined(STM8S003) || \
+    defined(STM8S903) || defined(STM8AF626x)
     case ITC_IRQ_ADC1:
 #endif /*STM8S105, STM8S103 or STM8S905 or STM8AF626x */
 

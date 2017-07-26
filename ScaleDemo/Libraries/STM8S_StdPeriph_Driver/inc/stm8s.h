@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm8s.h
   * @author  MCD Application Team
-  * @version V2.0.0
-  * @date    25-February-2011
+  * @version V2.1.0
+  * @date    18-November-2011
   * @brief   This file contains all HW registers definitions and memory mapping.
   ******************************************************************************
   * @attention
@@ -32,11 +32,14 @@
 
  /* #define STM8S208 */      /*!< STM8S High density devices with CAN */
  /* #define STM8S207 */      /*!< STM8S High density devices without CAN */
+ /* #define STM8S007 */      /*!< STM8S Value Line High density devices */
  /* #define STM8AF52Ax */    /*!< STM8A High density devices with CAN */
  /* #define STM8AF62Ax */    /*!< STM8A High density devices without CAN */
-    #define STM8S105         /*!< STM8S Medium density devices */
+    #define STM8S105      /*!< STM8S Medium density devices */
+ /* #define STM8S005 */      /*!< STM8S Value Line Medium density devices */
  /* #define STM8AF626x */    /*!< STM8A Medium density devices */
  /* #define STM8S103 */      /*!< STM8S Low density devices */
+ /* #define STM8S003 */      /*!< STM8S Value Line Low density devices */
  /* #define STM8S903 */      /*!< STM8S Low density devices */
 
 /*   Tip: To avoid modifying this file each time you need to switch between these
@@ -48,14 +51,17 @@
   - Medium-Density STM8A devices are the STM8AF622x/4x, STM8AF6266/68,
     STM8AF612x/4x, and STM8AF6166/68 microcontrollers where the Flash memory 
     density ranges between 8 to 32 Kbytes
-  - High-Density STM8S devices are the STM8S207xx and STM8S208xx microcontrollers
+  - High-Density STM8S devices are the STM8S207xx, STM8S007 and STM8S208xx microcontrollers
     where the Flash memory density ranges between 32 to 128 Kbytes.
-  - Medium-Density STM8S devices are the STM8S105x microcontrollers where the Flash
-    memory density ranges between 16 to 32-Kbytes.
-  - Low-Density STM8S devices are the STM8S103xx and STM8S903xx microcontrollers
+  - Medium-Density STM8S devices are the STM8S105x and STM8S005 microcontrollers
+    where the Flash memory density ranges between 16 to 32-Kbytes.
+  - Low-Density STM8S devices are the STM8S103xx, STM8S003 and STM8S903xx microcontrollers
     where the Flash density is 8 Kbytes. */
 
-#if !defined (STM8S208) && !defined (STM8S207) && !defined (STM8S105) && !defined (STM8S103) && !defined (STM8S903) && !defined (STM8AF52Ax) && !defined (STM8AF62Ax) && !defined (STM8AF626x)
+#if !defined (STM8S208) && !defined (STM8S207) && !defined (STM8S105) && \
+    !defined (STM8S103) && !defined (STM8S903) && !defined (STM8AF52Ax) && \
+    !defined (STM8AF62Ax) && !defined (STM8AF626x) && !defined (STM8S007) && \
+    !defined (STM8S003)&& !defined (STM8S005) 
  #error "Please select first the target STM8S/A device used in your application (in stm8s.h file)"
 #endif
 
@@ -88,11 +94,12 @@
         can define the HSE value in your toolchain compiler preprocessor.
   */
 #if !defined  HSE_Value
- #if defined (STM8S208) || defined (STM8S207) || defined (STM8AF52Ax) || defined (STM8AF62Ax)
+ #if defined (STM8S208) || defined (STM8S207) || defined (STM8S007) || defined (STM8AF52Ax) || \
+     defined (STM8AF62Ax)
   #define HSE_VALUE ((u32)24000000) /* Value of the External oscillator in Hz*/
  #else
   #define HSE_VALUE ((u32)16000000) /* Value of the External oscillator in Hz*/
- #endif /* STM8S208 || STM8S207 || STM8AF62Ax || STM8AF52Ax */
+ #endif /* STM8S208 || STM8S207 || STM8S007 || STM8AF62Ax || STM8AF52Ax */
 #endif /* HSE_Value */
 
 /**
@@ -113,13 +120,14 @@
  #define TINY page0
  #define EEPROM eeprom
  #define CONST  code
- #if defined (STM8S208) || defined (STM8S207) || defined (STM8AF52Ax) || defined (STM8AF62Ax)
+ #if defined (STM8S208) || defined (STM8S207) || defined (STM8S007) || defined (STM8AF52Ax) || \
+     defined (STM8AF62Ax)
    /*!< Used with memory Models for code higher than 64K */
   #define MEMCPY fmemcpy
- #else /* STM8S903, STM8S103, STM8S105, STM8AF626x */
+ #else /* STM8S903, STM8S103, STM8S003, STM8S105, STM8AF626x */
   /*!< Used with memory Models for code less than 64K */
   #define MEMCPY memcpy
- #endif /* STM8S208 or STM8S207 or STM8AF62Ax or STM8AF52Ax */ 
+ #endif /* STM8S208 or STM8S207 or STM8S007 or STM8AF62Ax or STM8AF52Ax */ 
 #else /*_IAR_*/
  #define FAR  __far
  #define NEAR __near
@@ -132,13 +140,14 @@
    to handle code smaller than 64KB) or far (3 bytes, to handle code larger 
    than 64K) */
 
-#if defined (STM8S105) || defined (STM8S103) || defined (STM8S903) || defined (STM8AF626x)
+#if defined (STM8S105) || defined (STM8S005) || defined (STM8S103) || defined (STM8S003) || \
+    defined (STM8S903) || defined (STM8AF626x)
 /*!< Used with memory Models for code smaller than 64K */
  #define PointerAttr NEAR
 #else /* STM8S208 or STM8S207 or STM8AF62Ax or STM8AF52Ax */
 /*!< Used with memory Models for code higher than 64K */
  #define PointerAttr FAR
-#endif /* STM8S105 or STM8S103 or STM8S903 or STM8AF626x */
+#endif /* STM8S105 or STM8S103 or STM8S003 or STM8S903 or STM8AF626x */
 
 /* Uncomment the line below to enable the FLASH functions execution from RAM */
 #if !defined (RAM_EXECUTION)
@@ -157,9 +166,9 @@
   #define IN_RAM(a) a
 #endif /* RAM_EXECUTION */
 
-/*!< [31:16] STM8S Standard Peripheral Library main version */
+/*!< [31:16] STM8S Standard Peripheral Library main version V2.1.0*/
 #define __STM8S_STDPERIPH_VERSION_MAIN   ((uint8_t)0x02) /*!< [31:24] main version */                                  
-#define __STM8S_STDPERIPH_VERSION_SUB1   ((uint8_t)0x00) /*!< [23:16] sub1 version */
+#define __STM8S_STDPERIPH_VERSION_SUB1   ((uint8_t)0x01) /*!< [23:16] sub1 version */
 #define __STM8S_STDPERIPH_VERSION_SUB2   ((uint8_t)0x00) /*!< [15:8]  sub2 version */
 #define __STM8S_STDPERIPH_VERSION_RC     ((uint8_t)0x00) /*!< [7:0]  release candidate */ 
 #define __STM8S_STDPERIPH_VERSION       ( (__STM8S_STDPERIPH_VERSION_MAIN << 24)\
@@ -265,7 +274,8 @@ GPIO_TypeDef;
   */
 
 /*----------------------------------------------------------------------------*/
-#if defined(STM8S105) || defined(STM8S103) || defined(STM8S903) || defined(STM8AF626x)
+#if defined(STM8S105) || defined(STM8S005) || defined(STM8S103) || defined(STM8S003) || \
+    defined(STM8S903) || defined(STM8AF626x)
 /**
   * @brief  Analog to Digital Converter (ADC1)
   */
@@ -351,7 +361,7 @@ GPIO_TypeDef;
  #define ADC1_CR3_DBUF    ((uint8_t)0x80) /*!< Data Buffer Enable mask */
  #define ADC1_CR3_OVR     ((uint8_t)0x40) /*!< Overrun Status Flag mask */
 
-#endif /* (STM8S105) ||(STM8S103) || (STM8S903) || (STM8AF626x) */
+#endif /* (STM8S105) ||(STM8S103) || (STM8S005) ||(STM8S003) || (STM8S903) || (STM8AF626x) */
 /**
   * @}
   */
@@ -360,7 +370,7 @@ GPIO_TypeDef;
 /**
   * @brief  Analog to Digital Converter (ADC2)
   */
-#if defined(STM8S208) || defined(STM8S207) || defined (STM8AF52Ax) || defined (STM8AF62Ax)
+#if defined(STM8S208) || defined(STM8S207) || defined (STM8S007) || defined (STM8AF52Ax) || defined (STM8AF62Ax)
  typedef struct ADC2_struct
  {
   __IO uint8_t CSR;        /*!< ADC2 control status register */
@@ -401,7 +411,7 @@ GPIO_TypeDef;
  #define ADC2_CR2_EXTSEL  ((uint8_t)0x30) /*!< External event selection mask */
  #define ADC2_CR2_ALIGN   ((uint8_t)0x08) /*!< Data Alignment mask */
 
-#endif /* (STM8S208) ||(STM8S207) || (STM8AF62Ax) || (STM8AF52Ax) */
+#endif /* (STM8S208) ||(STM8S207) || defined (STM8S007) || (STM8AF62Ax) || (STM8AF52Ax) */
 /**
   * @}
   */
@@ -798,7 +808,7 @@ TIM1_TypeDef;
 typedef struct TIM2_struct
 {
   __IO uint8_t CR1;   /*!< control register 1 */
-#if defined STM8S103
+#if defined(STM8S103) || defined(STM8S003)
 	uint8_t RESERVED1; /*!< Reserved register */
 	uint8_t RESERVED2; /*!< Reserved register */
 #endif
@@ -1032,7 +1042,7 @@ TIM3_TypeDef;
 typedef struct TIM4_struct
 {
   __IO uint8_t CR1;  /*!< control register 1 */
-#if defined STM8S103
+#if defined(STM8S103) || defined(STM8S003)
 	uint8_t RESERVED1; /*!< Reserved register */
 	uint8_t RESERVED2; /*!< Reserved register */
 #endif
@@ -2477,13 +2487,15 @@ CFG_TypeDef;
 /*                          Peripherals declarations                          */
 /******************************************************************************/
 
-#if defined(STM8S105) || defined(STM8S103) || defined(STM8S903) || defined(STM8AF626x)
+#if defined(STM8S105) || defined(STM8S005) || defined(STM8S103) || defined(STM8S003) || \
+    defined(STM8S903) || defined(STM8AF626x)
  #define ADC1 ((ADC1_TypeDef *) ADC1_BaseAddress)
-#endif /* (STM8S105) ||(STM8S103) || (STM8S903) || (STM8AF626x) */
+#endif /* (STM8S105) ||(STM8S103) || (STM8S005) ||(STM8S003) || (STM8S903) || (STM8AF626x) */
 
-#if defined(STM8S208) || defined(STM8S207) || defined (STM8AF52Ax) || defined (STM8AF62Ax)
+#if defined(STM8S208) || defined(STM8S207) || defined (STM8S007) || defined (STM8AF52Ax) || \
+    defined (STM8AF62Ax)
 #define ADC2 ((ADC2_TypeDef *) ADC2_BaseAddress)
-#endif /* (STM8S208) ||(STM8S207) || (STM8AF52Ax) || (STM8AF62Ax) */
+#endif /* (STM8S208) ||(STM8S207) || (STM8S007) || (STM8AF52Ax) || (STM8AF62Ax) */
 
 #define AWU ((AWU_TypeDef *) AWU_BaseAddress)
 
@@ -2513,11 +2525,13 @@ CFG_TypeDef;
 
 #define GPIOF ((GPIO_TypeDef *) GPIOF_BaseAddress)
 
-#if defined(STM8S207) || defined(STM8S208) || defined(STM8S105) || defined (STM8AF52Ax) || defined (STM8AF62Ax) || defined (STM8AF626x)
+#if defined(STM8S207) || defined (STM8S007) || defined(STM8S208) || defined(STM8S105) || \
+    defined(STM8S005) || defined (STM8AF52Ax) || defined (STM8AF62Ax) || defined (STM8AF626x)
  #define GPIOG ((GPIO_TypeDef *) GPIOG_BaseAddress)
 #endif /* (STM8S208) ||(STM8S207)  || (STM8S105) || (STM8AF52Ax) || (STM8AF62Ax) || (STM8AF626x) */
 
-#if defined(STM8S207) || defined(STM8S208) || defined (STM8AF52Ax) || defined (STM8AF62Ax)
+#if defined(STM8S207) || defined (STM8S007) || defined(STM8S208) || defined (STM8AF52Ax) || \
+    defined (STM8AF62Ax)
  #define GPIOH ((GPIO_TypeDef *) GPIOH_BaseAddress)
  #define GPIOI ((GPIO_TypeDef *) GPIOI_BaseAddress)
 #endif /* (STM8S208) ||(STM8S207) || (STM8AF62Ax) || (STM8AF52Ax) */
@@ -2530,33 +2544,36 @@ CFG_TypeDef;
 #define SPI ((SPI_TypeDef *) SPI_BaseAddress)
 #define I2C ((I2C_TypeDef *) I2C_BaseAddress)
 
-#if defined(STM8S208) ||defined(STM8S207) ||defined(STM8S103) ||defined(STM8S903)\
-    || defined (STM8AF52Ax) || defined (STM8AF62Ax)
+#if defined(STM8S208) ||defined(STM8S207) || defined (STM8S007) || defined(STM8S103) || \
+    defined(STM8S003) ||defined(STM8S903) || defined (STM8AF52Ax) || defined (STM8AF62Ax)
  #define UART1 ((UART1_TypeDef *) UART1_BaseAddress)
 #endif /* (STM8S208) ||(STM8S207)  || (STM8S103) || (STM8S903) || (STM8AF52Ax) || (STM8AF62Ax) */
 
-#if defined (STM8S105) || defined (STM8AF626x)
+#if defined (STM8S105) || defined (STM8S005) || defined (STM8AF626x)
  #define UART2 ((UART2_TypeDef *) UART2_BaseAddress)
-#endif /* STM8S105 || STM8AF626x */
+#endif /* STM8S105 || STM8S005 || STM8AF626x */
 
-#if defined(STM8S208) ||defined(STM8S207) || defined (STM8AF52Ax) || defined (STM8AF62Ax)
+#if defined(STM8S208) ||defined(STM8S207) || defined (STM8S007) || defined (STM8AF52Ax) || \
+    defined (STM8AF62Ax)
  #define UART3 ((UART3_TypeDef *) UART3_BaseAddress)
 #endif /* (STM8S208) ||(STM8S207) || (STM8AF62Ax) || (STM8AF52Ax) */
 
 #define TIM1 ((TIM1_TypeDef *) TIM1_BaseAddress)
 
-#if defined(STM8S208) ||defined(STM8S207) ||defined(STM8S103) ||defined(STM8S105)\
-    || defined (STM8AF52Ax) || defined (STM8AF62Ax) || defined (STM8AF626x)
+#if defined(STM8S208) || defined(STM8S207) || defined (STM8S007) || defined(STM8S103) || \
+    defined(STM8S003) || defined(STM8S105) || defined(STM8S005) || defined (STM8AF52Ax) || \
+    defined (STM8AF62Ax) || defined (STM8AF626x)
  #define TIM2 ((TIM2_TypeDef *) TIM2_BaseAddress)
 #endif /* (STM8S208) ||(STM8S207)  || (STM8S103) || (STM8S105) || (STM8AF52Ax) || (STM8AF62Ax) || (STM8AF626x)*/
 
-#if defined(STM8S208) ||defined(STM8S207) ||defined(STM8S105) || defined (STM8AF52Ax)\
-    || defined (STM8AF62Ax) || defined (STM8AF626x)
+#if defined(STM8S208) || defined(STM8S207) || defined (STM8S007) || defined(STM8S105) || \
+    defined(STM8S005) || defined (STM8AF52Ax) || defined (STM8AF62Ax) || defined (STM8AF626x)
  #define TIM3 ((TIM3_TypeDef *) TIM3_BaseAddress)
 #endif /* (STM8S208) ||(STM8S207)  || (STM8S105) || (STM8AF62Ax) || (STM8AF52Ax) || (STM8AF626x)*/
 
-#if defined(STM8S208) ||defined(STM8S207) ||defined(STM8S103) ||defined(STM8S105)\
-    || defined (STM8AF52Ax) || defined (STM8AF62Ax) || defined (STM8AF626x)
+#if defined(STM8S208) ||defined(STM8S207) || defined (STM8S007) || defined(STM8S103) || \
+    defined(STM8S003) || defined(STM8S105) || defined(STM8S005) || defined (STM8AF52Ax) || \
+    defined (STM8AF62Ax) || defined (STM8AF626x)
  #define TIM4 ((TIM4_TypeDef *) TIM4_BaseAddress)
 #endif /* (STM8S208) ||(STM8S207)  || (STM8S103) || (STM8S105) || (STM8AF52Ax) || (STM8AF62Ax) || (STM8AF626x)*/
 
@@ -2580,7 +2597,7 @@ CFG_TypeDef;
 
 /*============================== Interrupts ====================================*/
 #ifdef _RAISONANCE_
- #include <intrist7.h>
+ #include <intrins.h>
  #define enableInterrupts()    _rim_()  /* enable interrupts */
  #define disableInterrupts()   _sim_()  /* disable interrupts */
  #define rim()                 _rim_()  /* enable interrupts */
@@ -2600,14 +2617,14 @@ CFG_TypeDef;
  #define halt()                {_asm("halt\n");} /* Halt */
 #else /*_IAR_*/
  #include <intrinsics.h>
- #define enableInterrupts()    __enable_interrupt()  /* enable interrupts */
- #define disableInterrupts()   __disable_interrupt() /* disable interrupts */
- #define rim()                 __enable_interrupt()  /* enable interrupts */
- #define sim()                 __disable_interrupt() /* disable interrupts */
- #define nop()                 __no_operation()      /* No Operation */
- #define trap()                __trap()              /* Trap (soft IT) */
- #define wfi()                 __wait_for_interrup() /* Wait For Interrupt */
- #define halt()                __halt()              /* Halt */
+ #define enableInterrupts()    __enable_interrupt()   /* enable interrupts */
+ #define disableInterrupts()   __disable_interrupt()  /* disable interrupts */
+ #define rim()                 __enable_interrupt()   /* enable interrupts */
+ #define sim()                 __disable_interrupt()  /* disable interrupts */
+ #define nop()                 __no_operation()       /* No Operation */
+ #define trap()                __trap()               /* Trap (soft IT) */
+ #define wfi()                 __wait_for_interrupt() /* Wait For Interrupt */
+ #define halt()                __halt()               /* Halt */
 #endif /*_RAISONANCE_*/
 
 /*============================== Interrupt vector Handling ========================*/

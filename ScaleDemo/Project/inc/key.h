@@ -12,23 +12,31 @@
 #define KEY_PRESSED          0x1000
 #define KEY_PRESSED_3S       0x2000
 
-#define KEY_NULL     0
-#define KEY_1        1
-#define KEY_2        2
-#define KEY_3        3
-#define KEY_4        4
-#define KEY_5        5
-#define KEY_6        6
-#define KEY_7        7
-#define KEY_8        8
-#define KEY_9        9
-#define KEY_10       10
-#define KEY_11       11
-#define KEY_12       12
-#define KEY_13       13
-#define KEY_14       14
-#define KEY_15       15
-#define KEY_16       16
+#define KEY_NULL          0
+
+#define KEY_TARE       0x05
+#define KEY_ZERO       0x06
+#define KEY_CLEAR      0x07
+#define KEY_STAR       0x08
+
+#define KEY_7          0x09
+#define KEY_4          0x0A
+#define KEY_1          0x0B
+#define KEY_0          0x0C
+
+#define KEY_8          0x0D
+#define KEY_5          0x0E
+#define KEY_2          0x0F
+#define KEY_DOT        0x10
+
+#define KEY_9          0x11
+#define KEY_6          0x12
+#define KEY_3          0x13
+#define KEY_TOTAL      0x14
+
+#define KEY_RSV1       0xff
+#define KEY_RSV2       0xff
+#define KEY_RSV3       0xff
 
 
 void Key_Init(void);

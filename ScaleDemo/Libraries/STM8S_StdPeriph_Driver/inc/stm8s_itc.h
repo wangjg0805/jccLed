@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm8s_itc.h
   * @author  MCD Application Team
-  * @version V2.0.0
-  * @date    25-February-2011
+  * @version V2.1.0
+  * @date    18-November-2011
   * @brief   This file contains all functions prototype and macros for the ITC peripheral.
   ******************************************************************************
   * @attention
@@ -74,18 +74,18 @@ typedef enum {
   ITC_IRQ_UART1_RX       = (uint8_t)18,  /*!< USART1 RX interrupt */
   ITC_IRQ_I2C            = (uint8_t)19,  /*!< I2C interrupt */
   
-#if defined(STM8S105) || defined(STM8AF626x)
+#if defined(STM8S105) || defined(STM8S005) || defined(STM8AF626x)
   ITC_IRQ_UART2_TX       = (uint8_t)20,  /*!< USART2 TX interrupt */
   ITC_IRQ_UART2_RX       = (uint8_t)21,  /*!< USART2 RX interrupt */
 #endif /*STM8S105 or STM8AF626x */
 
-#if defined(STM8S208) || defined(STM8S207) || defined(STM8AF52Ax) || defined(STM8AF62Ax)
+#if defined(STM8S208) || defined(STM8S207) || defined(STM8S007) || defined(STM8AF52Ax) || defined(STM8AF62Ax)
   ITC_IRQ_UART3_TX       = (uint8_t)20,  /*!< USART3 TX interrupt */
   ITC_IRQ_UART3_RX       = (uint8_t)21,  /*!< USART3 RX interrupt */
   ITC_IRQ_ADC2           = (uint8_t)22,  /*!< ADC2 interrupt */
 #endif /*STM8S208 or STM8S207 or STM8AF52Ax or STM8AF62Ax */
 
-#if defined(STM8S105) ||defined(STM8S103) ||defined(STM8S903) || defined(STM8AF626x)  
+#if defined(STM8S105) || defined(STM8S005) || defined(STM8S103) || defined(STM8S003) ||  defined(STM8S903) || defined(STM8AF626x)  
   ITC_IRQ_ADC1           = (uint8_t)22,  /*!< ADC2 interrupt */
 #endif /*STM8S105, STM8S103 or STM8S903 or STM8AF626x */
 

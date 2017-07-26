@@ -1,5 +1,4 @@
-#include "stm8s.h"
-#include "stm8s_uart2.h" 
+#include "stm8s_conf.h"
 #include "global.h" 
 ////////////////////////////////////////////
 //uart2 application

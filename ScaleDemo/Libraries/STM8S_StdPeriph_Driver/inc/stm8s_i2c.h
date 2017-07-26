@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm8s_i2c.h
   * @author  MCD Application Team
-  * @version V2.0.0
-  * @date    25-February-2011
+  * @version V2.1.0
+  * @date    18-November-2011
   * @brief  This file contains all functions prototype and macros for the I2C peripheral.
   ******************************************************************************
   * @attention
@@ -328,7 +328,7 @@ typedef enum
   */
 #define I2C_MAX_STANDARD_FREQ ((uint32_t)100000)
 #define I2C_MAX_FAST_FREQ     ((uint32_t)400000)
-#if defined (STM8S208) || defined (STM8S207) 
+#if defined(STM8S208) || defined(STM8S207) || defined(STM8S007) 
  #define I2C_MAX_INPUT_FREQ     ((uint8_t)24)
 #else
  #define I2C_MAX_INPUT_FREQ     ((uint8_t)16)

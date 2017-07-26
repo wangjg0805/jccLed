@@ -8,6 +8,11 @@
 
 #define MACHINE_NORMAL_MODE     0
 #define MACHINE_FACTORY_MODE    1
+
+
+#define POWER_ON_ZERO_RANGE     4  //4%
+
+
 //MACH STAT
 typedef enum {
     STAT_WEIGH = 0,
@@ -39,10 +44,14 @@ typedef struct{
     u8 positive_flag;
     u8 stable_flag;
     u8 power_on_flag;
+    u8 power_on_cnt;
     u8 key_sound_time;
     SYSStatus current_mode;
     UNITType current_unit;
     u32 no_key_time;
+    
+    u8 price_dot;
+    u32 price_data;
 }RuningData;
 
 typedef struct{
@@ -50,6 +59,7 @@ typedef struct{
     u32 ad_dat_avg;
     u32 ad_zero_data;
     u32 ad_tare_data;
+    u32 power_on_zero_data;  //for manual zero proc
     float grossw;
     float netw;
 }MeasureData;

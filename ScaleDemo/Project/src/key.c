@@ -3,6 +3,8 @@
 #include "key.h"
 
 static u16 key_press_time[4][4];    //记录每个按键按下的时间
+static u8 key_released_flag = 0;
+static u8 key_read_flag = 1;
 
 void ScanDriveLine(u8 index)
 {
@@ -61,6 +63,8 @@ void Key_Init(void)
     
  }
 
+
+
 //**********************************************************************
 //函数  名:Key_Scan
 //函数功能:
@@ -71,24 +75,35 @@ void Key_Init(void)
 
 void  Key_Scan(void)
 {
-    u8 i,j,key_tmp;
-    
+    u8 i,j,k,key_tmp;
+   
+    k = 0;
     for(i=0;i<4;i++) {
         ScanDriveLine(i);
         key_tmp = (GPIO_ReadInputData(GPIOC) >> 1) & 0x0f; //某位为0表示有按键
         if(0x0f == key_tmp) {
-            for(j=0; j<4; j++)
-                key_press_time[i][j] = 0;  //清零
+            if(1 == key_read_flag) {
+                for(j=0; j<4; j++)
+                    key_press_time[i][j] = 0;  //清零
+            }
+            k++;
         } else {
             //有键按下
             switch((~key_tmp)&0x0f) {
-            case 0x01:  key_press_time[i][0]++; break;
+            case 0x01:  key_press_time[i][0]++;  break;
             case 0x02:  key_press_time[i][1]++; break;
             case 0x04:  key_press_time[i][2]++; break;
             case 0x08:  key_press_time[i][3]++; break;
             }
+            key_read_flag = 0;
         }
     }
+    
+    if(k == 4)
+        key_released_flag = 1;
+    else
+        key_released_flag = 0;
+    
 }
 /****************************************************************************
 * 名称：Get_KeyCode()
@@ -102,9 +117,12 @@ u16 Key_GetCode(void)
     u16 Key_CodeTmp;
     Key_CodeTmp = 0;
     
+    if((key_read_flag == 0) && (key_released_flag == 1)) 
+    {        
     for(i=0;i<4;i++) {
         for(j=0;j<4;j++){
             if(key_press_time[i][j] > KEY_PRESS_TIME_3S) {
+                key_press_time[i][j] = 0;
                 Key_CodeTmp = KEY_PRESSED_3S+((i+1)*4 + (j+1));
             }
         }
@@ -113,12 +131,69 @@ u16 Key_GetCode(void)
         for(i=0;i<4;i++) {
             for(j=0;j<4;j++){
                 if(key_press_time[i][j] > KEY_PRESS_TIME) {
+                    key_press_time[i][j] = 0;
                     Key_CodeTmp = KEY_PRESSED+((i+1)*4 + (j+1));
                 }
             }
         }
     }
     
+    key_read_flag = 1;
+   }
+   
     return(Key_CodeTmp);
 }
 
+u8 KeyCodeToNum(u8 keycode)
+{
+    u8 i;
+    switch(keycode) {
+    case KEY_0: i = 0; break;
+    case KEY_1: i = 1; break;
+    case KEY_2: i = 2; break;
+    case KEY_3: i = 3; break;
+    case KEY_4: i = 4; break;
+    case KEY_5: i = 5; break;
+    case KEY_6: i = 6; break;
+
+    case KEY_7: i = 7; break;
+    case KEY_8: i = 8; break;
+    case KEY_9: i = 9; break;
+    default:    i = 0; break;
+    }
+    return(i);
+}
+
+void Key_Proc(u16 key)
+{
+    switch(key)
+    {
+    case KEY_PRESSED+KEY_0:
+    case KEY_PRESSED+KEY_1:
+    case KEY_PRESSED+KEY_2:
+    case KEY_PRESSED+KEY_3:
+    case KEY_PRESSED+KEY_4:
+    case KEY_PRESSED+KEY_5:
+    case KEY_PRESSED+KEY_6:
+    case KEY_PRESSED+KEY_7:
+    case KEY_PRESSED+KEY_8:
+    case KEY_PRESSED+KEY_9:
+        Key_NumberProc(KeyCodeToNum(key - KEY_PRESSED));
+        break;        
+    case KEY_PRESSED+KEY_DOT:
+        Key_DotProc();
+        break;
+    case KEY_PRESSED+KEY_TARE:
+        Key_TareProc();
+        break;
+    case KEY_PRESSED+KEY_ZERO:
+        Key_ZeroProc();
+        break;        
+    case KEY_PRESSED+KEY_TOTAL:
+        break;
+    case KEY_PRESSED+KEY_CLEAR:
+        break; 
+    default:
+        break;
+    }
+}

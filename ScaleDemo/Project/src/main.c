@@ -1,4 +1,5 @@
-#include "stm8s.h"
+#include "stm8s_conf.h"
+
 #include "stdio.h" 
 #include "global.h"
 
@@ -37,15 +38,13 @@ void main(void)
     u32  i;
     //use HSEclk
     //HSE_CLK_INIT();
-    
-    u8 buf[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
-    
     HSI_CLK_INIT();
   
     LedCpu_Init();
-    Speaker_Init();
+    BEEP_Init(BEEP_FREQUENCY_2KHZ);
     Key_Init();
     CS1231_Init();
+    Filter_Init();
     ////////////////////////////ii2c init
     I2c_Init();
     ////////////////////////////ht1621 init 
@@ -55,62 +54,14 @@ void main(void)
     UART2_INIT();
     enableInterrupts();
 
-/*
-    Write_EEPROM(0x10,buf,0x08);
-    Write_EEPROM(0x20,&buf[8],0x08);
-    for(i=0;i<16;i++)
-        buf[i] = 0;
-*/
-    
-    while(1){
-        
-        if(Flag_10ms) {
-            Flag_10ms = 0;
-            Key_Scan();
-            /////////////////////////////////////////声音处理
-            if(0!=RunData.key_sound_time) {
-                Speaker_On();
-                RunData.key_sound_time--;
-                if(RunData.key_sound_time == 0)
-                    Speaker_Off();
-            }
-	    }
-        
-        if(Flag_100ms) {
-            Flag_100ms = 0;
-            Display_Boot_Info();
-            i = Key_GetCode();
-            if(0 != i) {
-                Display_Area2(i,2);
-                RunData.key_sound_time = 200;
-            } else
-                Display_Area2(22222,2);
-            
-            if(1 == CS1231_Read())
-                Display_Area3(MData.hx711_data,2);
-            else
-                Display_Area3(444444,2);
-            Update_Display();
-        }
-        if(0) {
-            Flag_500ms = 0;
-            Read_EEPROM(0x10,buf,0x08);
-            Read_EEPROM(0x20,&buf[8],0x08);
-        } 
+    /////////////////////////////////////////////////////////////////////////			
+    //i = System_Init();
+    i = 0xaa;
+    if(MACHINE_FACTORY_MODE == i) {
+        Factory_Pro();
+    } else {
+        Normal_Pro();
     }
-    
-
+	while(1){;}
+}  
  
-    ///////////////////////////系统应用初始化
-    filter_init();
-    ////////////////////////////////////////
-    ////////////////////////////cs5550 init
-  //////////////////////////////////////进入主循环
-  //打印机初始化
-  Printer_Init();
-  
-  while (1)
-    {  
-   ;
-   }   //while end
-}
