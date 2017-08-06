@@ -40,12 +40,15 @@ void Timer2_ISR(void)
 	T0ms02=0;
     T0ms10++;
     Flag_10ms = 1;
-   	//========== 100ms Time ============
+    Speaker_Proc();
+ 
+  	//========== 100ms Time ============
 	if(T0ms10<10)
 	    return;
 	T0ms10=0;
 	T0ms100++;
     Flag_100ms = 1;
+    RunData.no_key_time++; //100ms 
 			
 	//=========== 0.5s Time ============
 	if(T0ms100 < 5)

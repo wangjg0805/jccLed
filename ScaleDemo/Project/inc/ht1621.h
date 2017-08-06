@@ -39,13 +39,14 @@
 #define SEG_P 0x10
 
 //extern area
-void HT1621_Init(void);
-void Update_Display(void);
+extern void HT1621_Init(void);
+extern void DIS_Update(void);
 
-void All_ON_Must(void);
-void All_OFF_Must(void);
-void Display_Area1(u32 data,u8 dot);
-void Display_Area2(u32 data,u8 dot);
-void Display_Area3(u32 data,u8 dot);
+extern void DIS_On_All(void);
+extern void DIS_Off_All(void);
+extern void DIS_SpecialChar(u8 data);
+extern void DIS_Area1(u32 data,u8 dot);
+extern void DIS_Area2(u32 data,u8 dot);
+extern void DIS_Area3(u32 data,u8 dot);
 
 #endif

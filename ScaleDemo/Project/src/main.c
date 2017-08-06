@@ -12,19 +12,20 @@
 
 //
 ////////////////////////////////////////////
-void HSE_CLK_INIT(void)
+void Init_HSE(void)
 {
     CLK_DeInit(); 
     CLK_HSECmd(ENABLE);
-    while(SET != CLK_GetFlagStatus(CLK_FLAG_HSERDY));
-    CLK_SYSCLKConfig(CLK_PRESCALER_CPUDIV1);
-    CLK_ClockSwitchCmd(ENABLE); 
-    CLK_ClockSwitchConfig(CLK_SWITCHMODE_AUTO,CLK_SOURCE_HSE,DISABLE,CLK_CURRENTCLOCKSTATE_ENABLE);
+    //while(SET != CLK_GetFlagStatus(CLK_FLAG_HSERDY));
+    //CLK_SYSCLKConfig(CLK_PRESCALER_CPUDIV1);
+    //CLK_ClockSwitchCmd(ENABLE); 
+    //CLK_ClockSwitchConfig(CLK_SWITCHMODE_AUTO,CLK_SOURCE_HSE,DISABLE,CLK_CURRENTCLOCKSTATE_ENABLE);
 }
 
-void HSI_CLK_INIT()
+void Init_HSI(void)
 {
- CLK->CKDIVR &= (uint8_t)(~CLK_CKDIVR_HSIDIV);
+    CLK_HSIPrescalerConfig(CLK_PRESCALER_CPUDIV1);
+    
 }
 ////////////////////////////
 //主函数入口
@@ -36,11 +37,11 @@ void main(void)
     u32 cycle_times = 0;
     u32 cycle_times1 = 0;
     u32  i;
-    //use HSEclk
-    //HSE_CLK_INIT();
-    HSI_CLK_INIT();
+ 
+    Init_HSI();
   
     LedCpu_Init();
+    
     BEEP_Init(BEEP_FREQUENCY_2KHZ);
     Key_Init();
     CS1231_Init();
@@ -53,15 +54,31 @@ void main(void)
     ////////////////////////////RS232 init 
     UART2_INIT();
     enableInterrupts();
-
-    /////////////////////////////////////////////////////////////////////////			
-    //i = System_Init();
-    i = 0xaa;
-    if(MACHINE_FACTORY_MODE == i) {
-        Factory_Pro();
-    } else {
-        Normal_Pro();
+   /*
+    while(1){
+         if(1 == Flag_500ms) {
+            Flag_500ms = 0; 
+            LedCpu_Reverse();
+         
+         }
     }
+    */
+    /////////////////////////////////////////////////////////////////////////			
+    MachData.mode = System_Init();
+    SystemBootDisplay_Init(); //optional
+
+    if((MACHINE_NORMAL_MODE+MACHINE_CAL_MODE) == MachData.mode) {
+        CalData.calstart = 1;
+        CalData.calstep = 1;
+    } else if((MACHINE_NORMAL_MODE+MACHINE_CAL_MODE) == MachData.mode) {
+        FactoryData.factorystart = 1;
+        FactoryData.factorystep = 1;
+        FactoryData.factoryindex = 1;
+    }
+    
+    if(1)
+        Normal_Pro();
+    
 	while(1){;}
 }  
  

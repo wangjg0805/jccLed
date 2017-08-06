@@ -11,6 +11,19 @@
 #include "key.h"
 
 
+static void Display_Normal(void)
+{
+     u32 i,j;
+     
+     DIS_Area1(MData.grossw,2);
+     DIS_Area2(RunData.price_data,2);
+     DIS_Area3(MData.grossw * RunData.price_data / 100,3);  
+     DIS_Update();
+
+}
+
+
+
 void Normal_Pro(void)
 {
     u16 i;
@@ -19,35 +32,57 @@ void Normal_Pro(void)
         if(Flag_10ms) {
             Flag_10ms = 0;
             Key_Scan();
-            /////////////////////////////////////////ÉùÒô´¦Àí
-            if(0!=RunData.key_sound_time) {
-                BEEP_Cmd(ENABLE);
-                RunData.key_sound_time--;
-                if(RunData.key_sound_time == 0)
-                    BEEP_Cmd(DISABLE);
-            }
 	    }
         if(Flag_100ms) {
             Flag_100ms = 0;
             i = Key_GetCode();
             if(0 != i) {
-                Key_Proc(i);
+                switch(MachData.mode) {
+                case MACHINE_NORMAL_MODE + MACHINE_FACTORY_MODE:
+                    Key_Proc_Factory(i);
+                    break;
+                case MACHINE_NORMAL_MODE + MACHINE_CAL_MODE:
+                    Key_Proc_Cal(i);
+                    break;
+                case MACHINE_NORMAL_MODE:
+                    Key_Proc(i);
+                    RunData.no_key_time = 0;
+                    break;
+                default:
+                    break;
+                }
                 RunData.key_sound_time = 10;
             }
             
             if(1 == CS1231_Read()) {
                 ad_filter(MData.hx711_data);
-                //update_new_data();
-                MData.grossw = (MData.ad_dat_avg - MData.ad_zero_data) *30000.0 / MachData.ad_full_data; 
-                Display_Area1(MData.grossw,2);
-                Display_Area3(MData.ad_dat_avg,2);
+                //
+                switch(MachData.mode) {
+                case MACHINE_NORMAL_MODE + MACHINE_FACTORY_MODE:
+                    MData_update_normal();
+                    Display_Factory();
+                    break;
+                case MACHINE_NORMAL_MODE + MACHINE_CAL_MODE:
+                    MData_update_cal();
+                    Display_Cal();
+                    break;
+                case MACHINE_NORMAL_MODE:
+                    MData_update_normal();
+                    Display_Normal();
+                    break;
+                default:
+                    break;
+                }
             }
-            Display_Area2(RunData.price_data,2);
-            Update_Display();
         }
         
         if(1 == Flag_500ms) {
             Flag_500ms = 0; 
+            if(RunData.no_key_time > 70)
+                BkLight_Off();
+            else
+                BkLight_On();
+            //BkLight_Reverse();
             //Read_EEPROM(0x10,buf,0x08);
             //Read_EEPROM(0x20,&buf[8],0x08);
         } 

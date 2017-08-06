@@ -9,11 +9,11 @@
 
 void auto_zero_proc(void)
 { 
-    if(labs(MData.ad_dat_avg-MData.ad_zero_data) < FilterData.ad_filter_para*5) {
+    if(labs(MData.ad_dat_avg-MData.weigh_ad_zero) < FilterData.ad_filter_para*5) {
 	    FilterData.zero_track_cnt++;
 	    if(FilterData.zero_track_cnt > 20) {
 	        FilterData.zero_track_cnt = 0;
-	        MData.ad_zero_data = MData.ad_dat_avg;		 
+	        MData.weigh_ad_zero = MData.ad_dat_avg;		 
 	    }
 	} else  
 	    FilterData.zero_track_cnt = 0;
@@ -28,12 +28,12 @@ void load_track_proc(void)
     static u32 ad_zero_code_tmp;          //记忆零点
     u32 ad_weigh_value;         //本次产生的重量内码 
     //载荷跟踪的 重量条件
-	ad_weigh_value = labs(MData.ad_dat_avg - MData.ad_zero_data);     //当前的重量小于一定重量 也不进行跟踪
+	ad_weigh_value = labs(MData.ad_dat_avg - MData.weigh_ad_zero);     //当前的重量小于一定重量 也不进行跟踪
 	if(ad_weigh_value < FilterData.ad_filter_para*50)                            
         return;
     ////////////////////////////////////////////开始跟踪
     if(0 == FilterData.load_track_cnt) { //首次进入 首先是重复性检查
-        ad_zero_code_tmp = MData.ad_zero_data; 
+        ad_zero_code_tmp = MData.weigh_ad_zero; 
         lock_ad_tmp = ad_weigh_value;
         if(labs(ad_weigh_value-lock_ad_last) > FilterData.ad_filter_para*2) {//更新此次重量
             lock_ad_last = ad_weigh_value;
@@ -41,7 +41,7 @@ void load_track_proc(void)
             lock_ad_last = (lock_ad_last+ad_weigh_value)/2;
         }
 		 //get new
-         MData.ad_dat_avg = MData.ad_zero_data + lock_ad_last;
+         MData.ad_dat_avg = MData.weigh_ad_zero + lock_ad_last;
          FilterData.load_track_cnt++;
     } else {   
         ///////////////////////////////////////////////       
@@ -56,13 +56,13 @@ void load_track_proc(void)
                 //else
                 //  ad_zero_code = ad_zero_code - ad_tmp;     
                 ///////////////////////////////////////////////////// 
-                MData.ad_dat_avg = MData.ad_zero_data + lock_ad_last; 
+                MData.ad_dat_avg = MData.weigh_ad_zero + lock_ad_last; 
             } else { //重量变化量太大了，载荷跟踪自杀 对数据不予修正
                 FilterData.load_track_enable = 0;
                 FilterData.load_track_cnt = 0;            
             }
         } else {    //载荷跟踪时间未到 重量不发生变化
-            MData.ad_dat_avg = MData.ad_zero_data + lock_ad_last;    //锁定
+            MData.ad_dat_avg = MData.weigh_ad_zero + lock_ad_last;    //锁定
         }  
     }
 }

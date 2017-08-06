@@ -166,6 +166,7 @@ u8 KeyCodeToNum(u8 keycode)
 
 void Key_Proc(u16 key)
 {
+
     switch(key)
     {
     case KEY_PRESSED+KEY_0:

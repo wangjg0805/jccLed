@@ -55,10 +55,9 @@ const u8 display_code[] = {SEG_A+SEG_B+SEG_C+SEG_D+SEG_E+SEG_F,      //0
 //FULL
 u8 const display_FULL[]  = {DISP_NULL,DISP_NULL,DISP_F,DISP_U,DISP_L,DISP_L,DISP_NULL}; 
 //CAL
-u8 const display_CAL_INFO1[]  = {DISP_NULL,DISP_C,DISP_A,DISP_L,DISP_NULL};
-
-u8 const display_CAL_INFO2[]  = {DISP_NULL,DISP_C,DISP_A,DISP_L,DISP_NULL};
-u8 const display_CAL_INFO3[]  = {DISP_NULL,DISP_C,DISP_A,DISP_L,DISP_NULL};
+u8 const display_CAL_INFO[] = {DISP_NULL,DISP_NULL,DISP_NULL,DISP_NULL,DISP_NULL,
+                                  DISP_C,   DISP_A,   DISP_L,   DISP_X,        0,
+                                DISP_NULL,DISP_NULL,DISP_NULL,DISP_NULL,DISP_NULL,DISP_NULL};
 
 u8 const display_ERR_INFO[]   = {DISP_NULL,DISP_E,DISP_r,DISP_r,DISP_NULL,0,1};
 
@@ -124,12 +123,12 @@ void HT1621_Init(void)
     //Send_Com(COMMAND,NORMAL);        
     Send_Com(COMMAND,LCD_ON);   
     
-    All_OFF_Must();
+    DIS_Off_All();
 }  
 ////////////////////////////
 //HT1621 刷新显示区
 ///////////////////////////
-void Update_Display(void)
+void DIS_Update(void)
 {
     u8 i,j,data;   
     CSL;   
@@ -143,51 +142,59 @@ void Update_Display(void)
 }
 //-----------------------------------------------------------------------------   
 //全部点亮   
-void All_ON_Must(void)   
+void DIS_On_All(void)   
 {   
     u8 i;   
     for( i = 0; i < 16; i++)
         display_buffer[i] = 0xff;
     
-    Update_Display();
+    DIS_Update();
 }   
 
 //熄灭
-void All_OFF_Must(void)   
+void DIS_Off_All(void)   
 {   
     u8 i;   
     for( i = 0; i < 16; i++)
         display_buffer[i] = 0x00;
     
-    Update_Display();
+    DIS_Update();
 }   
 
 //-----------------------------------------------------------------------------   
 //全部点亮 
-void All_Special_Char(u8 data)   
+void DIS_SpecialChar(u8 data)   
 {   
     u8 i;   
     for( i = 0; i < 16; i++)
         display_buffer[i] = display_code[data];
     
-    Update_Display();
+    DIS_Update();
 }   
 //-----------------------------------------------------------------------------   
 
 /////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////
-void Display_Boot_Info(void)
+void DIS_BootInfo(void)
  {
     u8 i;
+    
+    
 	for(i=0;i<16;i++)	
         display_buffer[i] = display_code[display_BOOT_INFO[i]];
     
 }
 
- 
+void DIS_CalInfo(void)
+ {
+    u8 i;
+    for(i=0;i<16;i++)	
+        display_buffer[i] = display_code[display_CAL_INFO[i]];
+
+}
 //////////////////////////////////////////////////////////////////////
-void Display_Area1(u32 data,u8 dot)
+void DIS_Area1(u32 data,u8 dot)
 {
     u8 i,buf[5];
     if(data > 99999)
@@ -199,11 +206,10 @@ void Display_Area1(u32 data,u8 dot)
     buf[4] =  data % 10;
     for(i=0;i<5;i++)
         display_buffer[i] = display_code[buf[i]]; 
-    display_buffer[dot-1] |= SEG_P;
-
-
+    if(0 != dot)
+        display_buffer[0+dot] |= SEG_P;
 }	
-void Display_Area2(u32 data,u8 dot)
+void DIS_Area2(u32 data,u8 dot)
 {
     u8 i,buf[5];
     if(data > 99999)
@@ -217,9 +223,12 @@ void Display_Area2(u32 data,u8 dot)
     for(i=0;i<5;i++)
         display_buffer[5+i] = display_code[buf[i]]; 
     
+    if(0 != dot)
+        display_buffer[5+dot] |= SEG_P;
+    
 }	
 
-void Display_Area3(u32 data,u8 dot)
+void DIS_Area3(u32 data,u8 dot)
 {
     u8 i,buf[6];
     if(data > 999999)
@@ -228,12 +237,12 @@ void Display_Area3(u32 data,u8 dot)
     buf[1] = (data % 100000) / 10000;
     buf[2] = (data % 10000) / 1000;
     buf[3] = (data % 1000) / 100;
-   
     buf[4] = (data % 100) / 10;
-
     buf[5] =  data % 10;
     for(i=0;i<6;i++)
         display_buffer[10+i] = display_code[buf[i]];
-    
+   
+    if(0 != dot)
+        display_buffer[10+dot] |= SEG_P;
 }	
 

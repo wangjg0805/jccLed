@@ -6,8 +6,15 @@
 
 #include "stm8s.h"
 
-#define MACHINE_NORMAL_MODE     0
-#define MACHINE_FACTORY_MODE    1
+#define MACHINE_NORMAL_MODE     0x01
+#define MACHINE_FACTORY_MODE    0x02
+#define MACHINE_CAL_MODE        0x04
+
+
+
+#define MACHINE_AD_ZERO         10000
+#define MACHINE_FULL_ZERO       100000
+
 
 
 #define POWER_ON_ZERO_RANGE     4  //4%
@@ -29,13 +36,35 @@ typedef enum {
 
 
 typedef struct{
+    u8 mode;
     u8 dot_pos;
-    u8 weigh_step;
-    u32 weigh_full;
+
+    u8 weigh_onestep;
+    u32 weigh_fullrange;
     u32 weigh_division;
-    u32 ad_full_data;
+    
+    u8 weigh_calpoint_num;   
+    u32 weigh_ad_zero;
+    u32 weigh_ad_full;
+    u32 weigh_ad_calpoint[10];  //multi point cal
+    
     float weigh_coef;
+    
 }MachineData;
+
+typedef struct{
+    u8 displaystep_min;
+    u8 powerofftime;
+    u8 holdenable;
+    u8 peakenable;
+    u8 cheatenable;
+    u8 rsv1;
+    u8 rsv2;
+    u8 rsv3;
+    u8 rsv4;
+    
+}UserConfigData;
+
 
 typedef struct{
     u8 do_tare_flag;
@@ -57,7 +86,7 @@ typedef struct{
 typedef struct{
     u32 hx711_data;
     u32 ad_dat_avg;
-    u32 ad_zero_data;
+    u32 weigh_ad_zero;
     u32 ad_tare_data;
     u32 power_on_zero_data;  //for manual zero proc
     float grossw;
@@ -73,9 +102,15 @@ typedef struct{
 }FilterProcData;  
  
 typedef struct{
-    u8 cal_start;
-    u8 cal_step;
+    u8 calstart;
+    u8 calstep;
 }CalProcData;
+
+typedef struct{
+    u8 factorystart;
+    u8 factorystep;
+    u8 factoryindex;
+}FactoryProcData;
 
 ///////////////////////////////////////±äÁ¿ÉùÃ÷
 extern u8 Flag_10ms,Flag_100ms,Flag_500ms,Flag_30s;
@@ -87,7 +122,13 @@ extern MeasureData MData;
 extern RuningData RunData;
 extern FilterProcData FilterData;
 extern CalProcData CalData;
-
+extern FactoryProcData FactoryData;
 ////////////////////////////////////////////
 extern void delay(u32 length);
+extern void U32toBUF(u32 data,u8* p);
+extern u32 BUFtoU32(u8* p);
+
+extern u8 System_Init(void);
+extern void SystemBootDisplay_Init(void);
+
 #endif
